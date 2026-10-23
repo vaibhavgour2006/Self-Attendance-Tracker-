@@ -356,6 +356,9 @@ android/app/build/outputs/apk/debug/app-debug.apk
 
 ---
 
+## APK FILE LINK 
+https://drive.google.com/drive/folders/1uEKLsSQHOs2zygD5dUcu7hwQ_3vEHpzS?usp=drive_link
+
 ## 🔒 Privacy & Offline-First Guarantees
 
 - **No Third-Party Telemetry**: RollCall contains zero external trackers or analytical beacons.
