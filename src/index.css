@@ -1,0 +1,198 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-main: #0A0A0C;
+    --surface-secondary: #131316;
+    --surface-card: #1A1A1F;
+    --surface-elevated: #222228;
+    --text-primary: #F2F2F0;
+    --text-secondary: #8A8A93;
+    --text-tertiary: #5A5A63;
+    --accent-mint: #7FE3C0;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #0A0A0C;
+    color: #F2F2F0;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+.font-display {
+  font-family: 'Instrument Serif', Georgia, serif;
+}
+
+/* CRED-style subtle neumorphic tactile shadows */
+.card-raised {
+  background-color: #1A1A1F;
+  box-shadow: -1px -1px 2px rgba(255, 255, 255, 0.04), 3px 6px 18px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-elevated {
+  background-color: #222228;
+  box-shadow: -1px -1px 3px rgba(255, 255, 255, 0.05), 4px 8px 24px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-inset {
+  background-color: #131316;
+  box-shadow: inset 1px 2px 5px rgba(0, 0, 0, 0.6), inset -1px -1px 3px rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Hide scrollbars for clean mobile feel */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Snappy UI Keyframes for Tab and Progress Animations */
+
+/* 1. Clock Hands Spin */
+@keyframes clockHandSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  65% {
+    transform: rotate(385deg);
+  }
+  85% {
+    transform: rotate(355deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-clock-spin {
+  animation: clockHandSpin 650ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: center center;
+}
+
+/* 2. Calendar Page Flip */
+@keyframes calendarPageFlip {
+  0% {
+    transform: perspective(400px) rotateX(0deg);
+  }
+  45% {
+    transform: perspective(400px) rotateX(-75deg) translateY(-2px);
+    opacity: 0.7;
+  }
+  75% {
+    transform: perspective(400px) rotateX(15deg);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(400px) rotateX(0deg);
+  }
+}
+
+.animate-calendar-flip {
+  animation: calendarPageFlip 600ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transform-origin: top center;
+}
+
+/* 3. Bar Chart Waves (Individual Bars) */
+@keyframes barWaveLeft {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  30% {
+    transform: scaleY(0.35);
+  }
+  60% {
+    transform: scaleY(1.4);
+  }
+}
+
+@keyframes barWaveCenter {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  40% {
+    transform: scaleY(1.5);
+  }
+  70% {
+    transform: scaleY(0.4);
+  }
+}
+
+@keyframes barWaveRight {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  25% {
+    transform: scaleY(1.35);
+  }
+  55% {
+    transform: scaleY(0.3);
+  }
+  85% {
+    transform: scaleY(1.15);
+  }
+}
+
+.animate-bar-left {
+  animation: barWaveLeft 550ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: bottom center;
+}
+
+.animate-bar-center {
+  animation: barWaveCenter 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 50ms forwards;
+  transform-origin: bottom center;
+}
+
+.animate-bar-right {
+  animation: barWaveRight 550ms cubic-bezier(0.34, 1.56, 0.64, 1) 100ms forwards;
+  transform-origin: bottom center;
+}
+
+/* 4. Profile User Pop and Tick Pop */
+@keyframes userSilhouettePop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.3) translateY(-2px);
+  }
+  70% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes tickBouncePop {
+  0% {
+    transform: scale(0) rotate(-20deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.5) rotate(10deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.85) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-user-pop {
+  animation: userSilhouettePop 550ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: center center;
+}
+
+.animate-tick-pop {
+  animation: tickBouncePop 600ms cubic-bezier(0.34, 1.56, 0.64, 1) 80ms forwards;
+  transform-origin: center center;
+}

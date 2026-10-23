@@ -1,0 +1,6 @@
+{
+  "name": "RollCall — IET DAVV Attendance Tracker",
+  "description": "A minimalist, dark-aesthetic personal attendance tracker for IET DAVV students featuring geofenced attendance, timetable management, Google Calendar & Tasks sync, and smart analytics.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

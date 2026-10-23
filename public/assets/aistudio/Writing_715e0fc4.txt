@@ -1,0 +1,1208 @@
+﻿Writing
+
+
+MASTER PROMPT — IET DAVV Personal Attendance Tracker APK
+
+
+Build a polished, fully functional prototype of an Android-first personal attendance tracking app for students of Institute of Engineering and Technology, Devi Ahilya Vishwavidyalaya (IET DAVV), Indore.
+
+
+The app must help students track their daily classes, labs, workshops, academic holidays, personal attendance percentages, and subject-wise attendance. It should feel like a premium, minimalist application inspired by the visual design principles of CRED: sophisticated, dark, tactile, spacious, and highly polished.
+
+
+Take inspiration from the aesthetic principles, not the branding, logo, or copy of any existing app.
+
+
+Do not ask me questions. Make reasonable assumptions, document them briefly, and build the complete working prototype.
+
+
+---
+
+
+1. TECHNOLOGY STACK AND DELIVERABLES
+
+
+Build a real, interactive application rather than static UI mockups.
+
+
+Required technology
+
+
+- React with TypeScript.
+- Tailwind CSS for styling.
+- Vite as the development and build tool.
+- React Router for navigation, if needed.
+- Lucide React for minimalist icons.
+- Capacitor to make the web application compatible with Android APK packaging.
+- LocalStorage or IndexedDB for locally persistent student profiles, attendance records, timetable configurations, holidays, and settings.
+- Browser/device date and time APIs for the current date, class timers, and calendar.
+- Capacitor Geolocation or the appropriate browser/native geolocation implementation for location validation.
+- Recharts or lightweight custom charts for attendance analytics, if needed.
+
+
+Use reusable, maintainable components and a clear folder structure.
+
+
+Deliverables
+
+
+1. A complete, working React + Tailwind application.
+2. A mobile-first UI optimized for a 390px phone frame and smaller Android devices.
+3. Functional navigation and interactions across every screen.
+4. Local persistence so attendance entries survive app restarts.
+5. Realistic demo data for timetable previews, holidays, attendance, and analytics.
+6. A schedule configuration system supporting multiple branches, semesters, classroom locations, labs, and workshops.
+7. A simulated GPS demonstration mode, clearly labelled as a demo.
+8. An Android packaging setup using Capacitor, plus concise instructions for building the APK.
+9. A README explaining installation, design tokens, assumptions, data structure, schedule configuration, geofencing limitations, and APK generation.
+10. Empty, loading, error, permission-denied, and success states.
+
+
+Do not claim an APK has been generated unless an actual APK file has been built.
+
+
+---
+
+
+2. PRODUCT CONCEPT
+
+
+Working app name: RollCall.
+
+
+This is a student-owned, personal attendance diary, not an official IET DAVV attendance management system.
+
+
+The application should answer these questions at a glance:
+
+
+- What classes do I have today?
+- Which class is coming up, ongoing, or over?
+- Am I physically inside the designated location for a class?
+- Did I attend, miss, or mark a class as GT?
+- How is my attendance progressing this month and semester?
+- Which subjects have the highest and lowest attendance?
+- How many classes were cancelled or missed?
+- How many working days and holidays remain in the semester?
+- Am I above or below a target attendance percentage?
+
+
+Make the experience feel like checking a premium personal dashboard, not filling out a boring college spreadsheet.
+
+
+---
+
+
+3. STUDENT PROFILE AND INITIAL SETUP
+
+
+Create a first-launch onboarding and profile setup screen.
+
+
+The student must enter:
+
+
+Field| Requirement
+Roll number| Required
+Full name| Required
+College email| Optional
+Branch| Required dropdown
+Semester| Required dropdown
+Semester start date| Required
+Semester end date| Required
+
+
+Branch selector
+
+
+Support configurable IET DAVV engineering branches. Examples may include CSBS, CSE, IT, ECE, EEE and other available branches, but verify the actual branch list before presenting it as definitive.
+
+
+Semester selector
+
+
+Support semesters 1–8, subject to the academic structure applicable to the student.
+
+
+Validation
+
+
+- Roll number cannot be empty.
+- Name cannot be empty.
+- Branch and semester must be selected.
+- Semester end date must be after the start date.
+- Email must be valid when provided.
+- Provide clear field-level validation messages.
+- Allow editing the profile later.
+- Persist the profile locally.
+
+
+Use a clean, premium onboarding experience with floating-label inputs, spacious fields, subtle focus animations, and a clear primary action.
+
+
+Do not create a real account system or require an internet connection. This prototype is a locally stored, student-specific tracker.
+
+
+After onboarding, open the main dashboard.
+
+
+---
+
+
+4. TIMETABLE DATA AND IET DAVV SCHEDULE
+
+
+The timetable is one of the most important features.
+
+
+The app must display different class schedules depending on the selected branch, semester, academic dates, and day of the week.
+
+
+Schedule research and data-import rules
+
+
+Before preparing seed data:
+
+
+1. Search for publicly available, official IET DAVV timetables and academic schedules for relevant branches and semesters.
+2. Prefer official IET DAVV or DAVV sources.
+3. Use an uploaded timetable PDF as the preferred source when one is provided.
+4. Extract subject names, days, start and end times, class types, room or building names, and semester information.
+5. Preserve the timetable accurately.
+6. Do not invent real IET DAVV class timings or claim that unverified data is official.
+7. If no reliable timetable is available, include clearly labelled sample schedules and provide a simple way to replace them.
+
+
+The prototype must remain fully functional with local seed data even when live websites or APIs are unavailable.
+
+
+Supported class types
+
+
+Each schedule entry should support:
+
+
+- Lecture
+- Practical or lab
+- Workshop
+- Tutorial
+- Seminar or other configurable class types
+
+
+Each class record should contain
+
+
+- Unique class ID
+- Subject name
+- Subject or course code, when available
+- Branch
+- Semester
+- Day of week
+- Start time
+- End time
+- Class type
+- Building or block
+- Room number, if known
+- Configured geofence coordinates
+- Geofence radius
+- Optional notes
+
+
+A location can be shared by multiple classes when appropriate.
+
+
+Schedule configuration
+
+
+Create a configuration system allowing the app to:
+
+
+- Add or edit subjects.
+- Add or edit classes.
+- Change class times.
+- Assign building and room locations.
+- Configure recurring weekday schedules.
+- Add one-off classes.
+- Remove classes that no longer apply.
+- Import or replace local timetable data.
+
+
+Keep timetable data separate from UI components so the app can support future academic years and timetable updates without rewriting the interface.
+
+
+---
+
+
+5. MAIN DASHBOARD — TODAY'S CLASSES
+
+
+This is the primary screen and the most important screen in the application.
+
+
+The first screen after setup should immediately show the student's current academic day.
+
+
+Top header
+
+
+Create a refined header containing:
+
+
+- A small calendar/month-view icon on the left.
+- Today's date prominently displayed in the centre.
+- A subtle profile or settings icon on the right.
+
+
+Use the actual local device date and time.
+
+
+Do not require Google Calendar API just to display today's date. Google Calendar integration is optional and should not be a prerequisite for the prototype.
+
+
+Below the date, display a small weekday label and academic-day or holiday status.
+
+
+Attendance overview
+
+
+Show a visually dominant, elegant summary of the student's current semester attendance percentage.
+
+
+For example:
+
+
+72%
+
+
+Semester attendance
+
+
+Below it, show a small caption with the number of attended classes compared with scheduled, non-cancelled classes.
+
+
+Keep the overview visually restrained. The large percentage should be the main focal point, not surrounded by too many cards.
+
+
+Today's timetable
+
+
+Display today's classes in chronological order.
+
+
+Every class card should show:
+
+
+- Subject name.
+- Time range.
+- Class type.
+- Classroom, lab, or workshop location.
+- A small live status indicator.
+- Existing attendance status, if recorded.
+- A clear action when an attendance entry can be made.
+
+
+Use a vertical timeline or elegant stacked cards.
+
+
+Time-based class status
+
+
+Calculate class status using the actual current local time.
+
+
+Support the following schedule states:
+
+
+- Upcoming: the class has not started.
+- Starting soon: the configured start time is approaching.
+- Ongoing: the current time is between the class start and end times.
+- Ended: the scheduled end time has passed.
+
+
+Transitions should happen automatically as time changes, without requiring a page refresh.
+
+
+Handle midnight, semester boundaries, empty schedules, holidays, and overlapping schedule entries gracefully.
+
+
+Class interactions
+
+
+Tapping a class card should open a bottom sheet or class-detail view.
+
+
+Show the subject, schedule, location, geofence status, and available attendance actions.
+
+
+The four attendance choices must be:
+
+
+1. Attended
+2. Absent
+3. GT 😛
+4. Cancelled
+
+
+Preserve the GT label exactly as written, while allowing it to be renamed in settings.
+
+
+Use these rules:
+
+
+- Attended requires successful location validation in normal mode.
+- Absent can be recorded after the class has ended without location validation.
+- GT 😛 can be recorded as a separate personal status without location validation.
+- Cancelled removes the class from the attendance denominator.
+- A cancelled class should not count as attended or absent.
+- Prevent accidental duplicate attendance records for the same class instance.
+- Allow corrections to a personal entry, with a clear indication that it is an edited record.
+- An ended class with no entry may be shown as unrecorded or require the user to select a status. Do not silently treat it as attended.
+
+
+A student should be able to open an ongoing class, verify their location, and record the appropriate entry through an attractive bottom sheet.
+
+
+Show a clear toast or confirmation state after each successful action.
+
+
+---
+
+
+6. GEOFENCING AND CLASS LOCATIONS
+
+
+Create a location-validation system so students can record attendance only when they are physically near the designated classroom, lab, or workshop.
+
+
+Each location should have:
+
+
+- A location name.
+- Optional building or block identifier.
+- Latitude and longitude.
+- A configurable geofence radius.
+- An optional location description.
+
+
+Different classes can have different locations. A lab and a lecture hall must not be assumed to be in the same place.
+
+
+Geofence behaviour
+
+
+When the student chooses Attended:
+
+
+1. Request location permission when needed.
+2. Obtain the device's current coordinates.
+3. Calculate the distance between the current coordinates and the configured class location.
+4. Determine whether the student is within the permitted radius.
+5. Check location accuracy against a configurable tolerance.
+6. Permit the attendance entry only when the validation conditions are satisfied.
+
+
+Use a suitable distance calculation such as the Haversine formula.
+
+
+Make the geofence radius configurable, with a reasonable initial demo value such as 80 metres. Do not treat that example as an official college requirement.
+
+
+User feedback
+
+
+If the student is inside the geofence, show a subtle confirmation:
+
+
+"Location verified"
+
+
+If outside the geofence, show:
+
+
+"You're outside the permitted class location."
+
+
+If permission is denied, coordinates are unavailable, or location accuracy is insufficient, explain what went wrong and provide a retry action.
+
+
+Do not automatically mark the student absent merely because GPS fails.
+
+
+Demo requirements
+
+
+Since this is a mock-data prototype:
+
+
+- Provide a clearly labelled Demo location mode.
+- Allow the developer or tester to simulate being inside or outside a configured geofence.
+- Keep simulated results visually distinguishable from real device location checks.
+- Never present simulated GPS as real physical verification.
+- Do not implement location spoofing or falsely claim that browser-based location simulation is secure.
+
+
+For an actual APK, use a suitable native location implementation through Capacitor or another Android-compatible approach.
+
+
+A map is optional for the prototype. CARTO, Google Maps, or an OpenStreetMap-based library may be used for visualization if appropriately configured, but a map API is not necessary for the basic distance check. Avoid requiring paid API keys for the demo.
+
+
+Do not send personal coordinates to an external server. Keep location data local unless the student explicitly opts into a future feature that requires otherwise.
+
+
+---
+
+
+7. MONTHLY CALENDAR SCREEN
+
+
+When the student taps the calendar icon to the left of today's date, open a dedicated full-month attendance calendar.
+
+
+Design the month view as a clean grid of rounded-square date tiles with smooth corners and consistent spacing.
+
+
+Calendar navigation
+
+
+Provide:
+
+
+- Previous-month navigation.
+- Next-month navigation.
+- A month and year heading.
+- A clear way to return to today.
+- Day-of-week labels.
+- A distinct highlight for today's date.
+- Different visual states for weekends, holidays, and class days.
+
+
+Display a sensible default working week of Monday through Friday. Keep the working-day configuration editable because actual timetables may vary.
+
+
+Date tiles
+
+
+Each date tile should visually summarize the student's recorded attendance that day.
+
+
+Use restrained status indicators, such as tiny dots or short secondary labels, for:
+
+
+- Attended classes.
+- Absent classes.
+- GT entries.
+- Cancelled classes.
+- Holidays.
+- Dates with no scheduled classes.
+- Dates with incomplete attendance records.
+
+
+Do not overwhelm each tile with multiple bright colours.
+
+
+Selecting any date opens that date's details.
+
+
+Selected-date details
+
+
+Below the calendar or in a bottom sheet, show:
+
+
+- Selected date.
+- Number of scheduled classes.
+- Number attended.
+- Number absent.
+- Number marked GT.
+- Number cancelled.
+- Any applicable holiday or special academic event.
+- The day's full timetable.
+
+
+The user should be able to navigate through the entire academic period within the configured semester dates.
+
+
+---
+
+
+8. ACADEMIC CALENDAR AND HOLIDAYS
+
+
+Provide a local academic-calendar system.
+
+
+The college is expected to operate five days a week by default, but the working-day settings must remain configurable.
+
+
+Holiday ranges
+
+
+Support holidays covering a continuous date range.
+
+
+For example, a Diwali holiday from 5 November to 12 November must mark all dates from 5 November through 12 November as holidays, inclusive.
+
+
+Do not add a scheduled class occurrence to a holiday unless an explicitly configured exception applies.
+
+
+Academic calendar event fields
+
+
+- Event name.
+- Start date.
+- End date.
+- Event type: holiday, examination, vacation, special working day, or other event.
+- Optional notes.
+
+
+Holiday behaviour
+
+
+- Display a clear holiday banner on the dashboard.
+- Mark holidays in the month calendar.
+- Do not count holidays as absent classes.
+- Do not include non-existent class sessions in attendance totals.
+- Avoid automatically generating weekday classes during semester breaks or holidays.
+- Allow overlapping holidays and events to be handled consistently.
+- Allow academic dates to be edited without changing historic attendance entries.
+
+
+Seed the prototype with clearly labelled example holiday ranges rather than claiming unverified dates are IET DAVV holidays.
+
+
+---
+
+
+9. MONTHLY ATTENDANCE ANALYTICS
+
+
+Below the month calendar, create a comprehensive but elegant monthly attendance summary.
+
+
+Include these statistics:
+
+
+- Total scheduled classes.
+- Attended classes.
+- Absent classes.
+- GT entries.
+- Cancelled classes.
+- Monthly attendance percentage.
+
+
+Use clear definitions.
+
+
+Attendance percentage formula
+
+
+For a selected period:
+
+
+Attendance percentage = Attended classes ÷ (Scheduled classes − Cancelled classes) × 100
+
+
+Exclude cancelled classes from the denominator.
+
+
+Keep Absent and GT as distinct categories. By default, GT is not counted as Attended. It remains in the denominator because it is not an official attendance confirmation in this personal tracker. Make that interpretation configurable in settings if the student's intended meaning of GT differs.
+
+
+Handle a zero denominator gracefully by showing "No scheduled classes" rather than NaN, infinity, or an invented percentage.
+
+
+Monthly summary card
+
+
+Create a premium summary section with:
+
+
+- A large monthly attendance percentage.
+- A subtle comparison with the previous month when data exists.
+- A compact breakdown of attendance statuses.
+- A small, clean chart showing attendance trends across the month.
+
+
+Avoid excessive visualisations or crowded dashboards.
+
+
+---
+
+
+10. SEMESTER-WIDE ANALYTICS
+
+
+Create an Insights screen for the student's overall semester performance.
+
+
+This screen must calculate attendance from the beginning of the configured semester through the relevant selected date, with no classes counted outside the active semester.
+
+
+Overall attendance
+
+
+Display:
+
+
+- Total semester attendance percentage.
+- Total attended classes.
+- Total absent classes.
+- Total GT entries.
+- Total cancelled classes.
+- Total eligible scheduled classes.
+- Attendance history by month.
+
+
+The overall semester percentage must be calculated from class-level records, rather than taking an unweighted average of each month's percentages.
+
+
+Subject-wise analysis
+
+
+Aggregate attendance by subject or course ID.
+
+
+Display three highlighted categories:
+
+
+Least attended class
+
+
+The subject with the lowest attendance percentage.
+
+
+Most attended class
+
+
+The subject with the highest attendance percentage.
+
+
+Mid attendance class
+
+
+The subject closest to the median subject-level attendance percentage.
+
+
+Calculate the percentages from valid, non-cancelled class sessions. For the mid-attendance result, sort the eligible subject percentages and choose the middle-ranked result or a documented median-based equivalent.
+
+
+If multiple subjects have equal values, display a consistent tie indicator.
+
+
+Exclude subjects with no eligible classes or insufficient data from misleading rankings.
+
+
+Visualisations
+
+
+Use minimal visualisations:
+
+
+- One semester attendance hero.
+- One compact trend chart.
+- One ranked subject list.
+- One monthly breakdown.
+
+
+Highlight weak attendance without turning the entire screen into a red warning dashboard.
+
+
+---
+
+
+11. FUNNY ATTENDANCE MESSAGES
+
+
+The app should have a humorous personality when showing attendance percentages.
+
+
+Keep the main UI premium and understated, but allow the following personalised Hindi messages to appear in the attendance-insight area.
+
+
+Use mutually exclusive percentage ranges, evaluated from the lowest threshold upward.
+
+
+Attendance percentage| Message
+Below 30%| Bhagwan apki aatma ko shanti de
+30% to below 50%| Ghee khatam 🫙
+50% to below 75%| Don't worry bhagwan sabka bhala hi karta hai 🙏🏽😭
+75% to below 85%| Abhi bhi comeback ka time hai.
+85% and above| Attendance ki duniya mein aap hi legend ho.
+
+
+The messages must update automatically when attendance records change.
+
+
+Keep the original three user-provided messages intact. The additional messages may be edited through a configurable message table.
+
+
+Do not use the funny messages as system alerts, GPS permissions errors, or critical accessibility feedback.
+
+
+Do not use exaggerated animations, full-screen celebratory effects, or childish illustrations. The humour should contrast with the app's refined dark visual language.
+
+
+---
+
+
+12. ADDITIONAL SCREENS
+
+
+Create the following main screens.
+
+
+Screen A — Today
+
+
+The primary dashboard, featuring the current date, semester percentage, today's timeline, class states, and attendance actions.
+
+
+Screen B — Calendar
+
+
+The full-month attendance calendar, academic holidays, selected-date details, and monthly statistics.
+
+
+Screen C — Insights
+
+
+Semester attendance, monthly trends, least-attended subject, most-attended subject, median-ranked subject, and the attendance humour section.
+
+
+Screen D — Profile and settings
+
+
+Include:
+
+
+- Roll number.
+- Name.
+- Optional college email.
+- Branch.
+- Semester.
+- Semester start date and end date.
+- Working-day configuration.
+- Attendance target percentage, initially 75%.
+- GT status configuration.
+- Geofence settings.
+- Demo location mode.
+- Local data export.
+- Local data import.
+- Reset demo data.
+- Clear all personal data.
+
+
+Ask for confirmation before clearing data.
+
+
+Use a maximum of four primary bottom-navigation icons: Today, Calendar, Insights, and Profile.
+
+
+Class details, date details, and settings subsections should open through internal navigation or bottom sheets rather than creating a cluttered main navigation bar.
+
+
+---
+
+
+13. PREMIUM VISUAL DESIGN SYSTEM
+
+
+Design philosophy
+
+
+Restraint is the luxury.
+
+
+Every screen should feel calm, confident, and uncluttered. Use fewer visual elements, generous spacing, clear hierarchy, and carefully controlled contrast.
+
+
+There must be one dominant focal point per screen.
+
+
+Avoid making the application look like a generic college management dashboard.
+
+
+Colour system
+
+
+Use these colours as design tokens:
+
+
+- Main background: "#0A0A0C"
+- Secondary surface: "#131316"
+- Raised card surface: "#1A1A1F"
+- Elevated surface: "#222228"
+- Primary text: "#F2F2F0"
+- Secondary text: "#8A8A93"
+- Tertiary text: "#5A5A63"
+- Single accent: soft mint "#7FE3C0"
+
+
+Use the accent sparingly for important active states, the primary button, selected calendar dates, and key numbers.
+
+
+Keep accent usage to approximately 5% of the screen or less.
+
+
+Status colours may be used in small, restrained indicators when necessary for accessibility, but must not introduce competing accent colours throughout the interface.
+
+
+No pure black backgrounds, blinding white surfaces, neon gradients, or excessive coloured cards.
+
+
+Depth and surfaces
+
+
+Use tasteful neumorphism, not exaggerated soft UI.
+
+
+Raised cards and buttons should have:
+
+
+- A very subtle upper-left light shadow.
+- A deeper lower-right shadow.
+- A fine, low-contrast inner border.
+- Dark, carefully layered surfaces.
+- Rounded corners between 20px and 28px.
+
+
+Pressed elements should respond with a subtle inset effect.
+
+
+Use pill-shaped primary and secondary buttons where appropriate.
+
+
+Avoid harsh borders and heavy drop shadows.
+
+
+Typography
+
+
+Use Inter, Sora, or Manrope for the interface.
+
+
+Use Instrument Serif or a similar refined display font for major attendance percentages and selected large headlines.
+
+
+Follow a consistent type scale centred around:
+
+
+"12 / 14 / 16 / 20 / 32 / 56"
+
+
+Use uppercase, widely spaced section labels sparingly. Maintain generous line height, strong numerical hierarchy, and legible secondary information.
+
+
+Layout
+
+
+- Mobile-first layout optimised for an Android phone.
+- Content width centred within a 390px phone frame on desktop.
+- Full-width layouts on smaller mobile devices.
+- At least 24px of outer padding for primary content areas where space permits.
+- Consistent 8px spacing grid.
+- Generous vertical spacing between sections.
+- Four-icon maximum bottom navigation.
+- A minimum 44px tap target wherever practical.
+
+
+Motion
+
+
+Use refined motion lasting approximately 200–350ms.
+
+
+Include:
+
+
+- Smooth screen transitions.
+- Subtle tap compression to approximately 0.97 scale.
+- Soft number-counting animation.
+- Gentle card expansion.
+- Small calendar selection transitions.
+- Subtle skeleton loading effects.
+
+
+Respect "prefers-reduced-motion".
+
+
+Do not introduce bouncing cards, excessive parallax, distracting background motion, or animations that delay attendance recording.
+
+
+Microcopy
+
+
+Use short, calm, slightly witty copy throughout the normal interface.
+
+
+The custom attendance jokes above are intentional exceptions.
+
+
+Avoid unnecessary exclamation marks, verbose instructions, and emojis outside the designated humour and GT elements.
+
+
+---
+
+
+14. REUSABLE COMPONENTS
+
+
+Build a consistent reusable component library.
+
+
+At minimum, implement:
+
+
+- "Button": primary, secondary, ghost, destructive.
+- "Card": raised and inset.
+- "Chip": class type, class state, attendance status.
+- "Input": floating-label input with validation.
+- "Select": branch, semester and configuration dropdown.
+- "BottomSheet": class detail and attendance selection.
+- "Toggle": location simulation and settings.
+- "TabBar": four primary navigation items.
+- "TimelineItem": timetable class.
+- "DateTile": monthly calendar tile.
+- "StatBlock": attendance metric.
+- "AttendanceRing": semester or monthly attendance.
+- "SubjectAttendanceRow": subject-wise percentage.
+- "HolidayBanner": academic event.
+- "StatusIndicator": upcoming, ongoing, ended, attended, absent, GT, cancelled.
+- "Toast": confirmation and error feedback.
+- "EmptyState": no classes, no records, or unavailable timetable.
+- "Skeleton": loading placeholder.
+- "LocationStatus": permission, validation, and demo location feedback.
+- "ConfirmationDialog": reset or delete data.
+
+
+Create one central theme/token file for colours, shadows, radii, spacing, typography, and transitions.
+
+
+Do not duplicate styling decisions across components.
+
+
+---
+
+
+15. DATA MODEL AND BUSINESS LOGIC
+
+
+Use typed data structures.
+
+
+Suggested conceptual models:
+
+
+StudentProfile
+
+
+"id", "rollNumber", "name", "collegeEmail", "branch", "semester", "semesterStartDate", "semesterEndDate".
+
+
+Subject
+
+
+"id", "name", "courseCode", "branch", "semester".
+
+
+ScheduleEntry
+
+
+"id", "subjectId", "dayOfWeek", "startTime", "endTime", "classType", "locationId".
+
+
+CampusLocation
+
+
+"id", "name", "building", "room", "latitude", "longitude", "geofenceRadiusMeters".
+
+
+AttendanceRecord
+
+
+"id", "scheduleEntryId", "classDate", "status", "markedAt", "locationValidationState", "isEdited".
+
+
+AcademicEvent
+
+
+"id", "name", "startDate", "endDate", "eventType", "notes".
+
+
+AppSettings
+
+
+"workingDays", "attendanceTarget", "gtLabel", "gtCountsAsAttended", "geofenceEnabled", "demoLocationMode".
+
+
+You may refine these models as required.
+
+
+Generate class occurrences from the recurring timetable and apply them to actual calendar dates within the semester. Resolve holidays and explicit timetable exceptions before calculating statistics.
+
+
+Use stable identifiers so a change to a subject name does not corrupt historic attendance records.
+
+
+Store all dates consistently and compare class times using the device's local timezone.
+
+
+Do not create duplicate records when the user taps a class repeatedly.
+
+
+Keep data operations separate from React presentation logic.
+
+
+Provide a calculation utility for monthly attendance and another for semester-wide attendance, and test them against edge cases.
+
+
+---
+
+
+16. FUNCTIONALITY AND QUALITY REQUIREMENTS
+
+
+The app must not merely resemble a finished product; its controls must work.
+
+
+Functional requirements
+
+
+- Complete student onboarding.
+- Profile editing.
+- Today-to-calendar navigation.
+- Month navigation and date selection.
+- Automatic class-state calculation based on time.
+- Class detail bottom sheets.
+- The four attendance status options.
+- Simulated location validation.
+- Local attendance persistence.
+- Monthly and overall attendance calculations.
+- Subject-level rankings.
+- Academic holiday ranges.
+- Working-day configuration.
+- Empty, loading, error, and permission-denied states.
+- Data export and import.
+- Demo reset.
+- Responsive layouts.
+- Keyboard accessibility where appropriate.
+
+
+Accessibility
+
+
+- Maintain approximately 4.5:1 contrast for normal text.
+- Provide clearly visible focus rings.
+- Use semantic HTML and appropriate ARIA labels.
+- Do not rely solely on colour to communicate attendance states.
+- Support reduced-motion preferences.
+- Keep touch targets comfortably large.
+- Use accessible confirmation and error messages.
+
+
+Privacy
+
+
+- Do not request unnecessary personal information.
+- Do not transmit student data, roll numbers, or coordinates to external services.
+- Keep mock attendance and profile data local.
+- Explain why location permission is needed before requesting it.
+- Do not describe locally recorded attendance as officially verified by the college.
+
+
+Error handling
+
+
+Handle missing timetable data, missing coordinates, malformed imported files, invalid dates, unavailable location, local storage failures, and empty analytics.
+
+
+Do not silently discard records or show fabricated attendance percentages.
+
+
+---
+
+
+17. APK PREPARATION
+
+
+Prepare the prototype so it can be packaged as an Android APK.
+
+
+Use Capacitor with a proper Android configuration.
+
+
+Document the basic process to:
+
+
+1. Install dependencies.
+2. Build the React frontend.
+3. Configure Capacitor.
+4. Add or sync the Android project.
+5. Configure Android location permissions as needed.
+6. Build and install a debug APK using Android Studio or Gradle.
+
+
+Do not require a production backend or paid API credentials to run the prototype.
+
+
+Clearly identify anything that requires additional work before a production release, including robust device-location verification, permission handling, timetable data maintenance, and any future cloud sync.
+
+
+A browser-only geolocation check must not be advertised as tamper-proof attendance verification.
+
+
+---
+
+
+18. ACCEPTANCE TESTS
+
+
+Before considering the prototype complete, verify the following scenarios.
+
+
+1. A new student can enter a roll number, name, branch, semester, and semester dates without providing an email.
+2. The student sees only timetable entries applicable to their selected branch, semester, and date.
+3. A class changes from Upcoming to Ongoing and then Ended according to the configured clock.
+4. An eligible class can be marked Attended when the simulated or actual location passes the geofence checks.
+5. An outside-geofence attempt to mark Attended is rejected with a helpful explanation.
+6. Absent, GT 😛, and Cancelled remain separately identifiable.
+7. Cancelled sessions are excluded from both the attendance numerator and denominator.
+8. GT records are displayed separately and follow the configured calculation rule.
+9. Semester and monthly percentages are calculated correctly.
+10. A multi-day academic holiday marks every date in its configured range.
+11. A selected calendar date displays the correct schedule and attendance summary.
+12. The least-attended, most-attended, and median-ranked subject calculations are correct.
+13. The correct humorous message appears at each configured percentage threshold.
+14. Attendance records remain available after closing and reopening the application.
+15. Reset and deletion operations require confirmation.
+16. The interface remains polished and usable on a narrow Android screen.
+17. The README explains all demo limitations and APK build steps.
+
+
+---
+
+
+FINAL EXECUTION INSTRUCTIONS
+
+
+Start by stating the important assumptions in one short paragraph.
+
+
+Then build the application end to end.
+
+
+Do not stop after creating wireframes, a landing page, or a static dashboard.
+
+
+Prioritise a fully working Today screen, attendance actions, timetable logic, monthly calendar, academic holidays, geofence simulation, and attendance analytics.
+
+
+Populate all screens with realistic but clearly labelled sample data when verified IET DAVV timetable data is unavailable.
+
+
+Keep the architecture simple, the user interface premium, and the attendance calculations accurate.
+
+
+The final result should look like a polished commercial Android app while remaining a transparent, offline-friendly personal attendance tracker.
